@@ -1,14 +1,16 @@
 {
-		"dockerComposeFile": "docker-compose.yml",
-		"service": "app",
-		"workspaceFolder": "/workspaces",
-		"remoteEnv": {
-				"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
-				"FULL_NAME": "${localEnv:FULL_NAME}",
-				"USER_MAIL": "${localEnv:USER_MAIL}",
-				"TOKEN_SEQ_SIMPLETEST": "${localEnv:TOKEN_SEQ_SIMPLETEST}"
-		},
-		"extensions": [
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/SimpleTest",
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+		"FULL_NAME": "${localEnv:FULL_NAME}",
+		"USER_MAIL": "${localEnv:USER_MAIL}",
+		"TOKEN_SEQ_SIMPLETEST": "${localEnv:TOKEN_SEQ_SIMPLETEST}"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"eamodio.gitlens",
 				"quicktype.quicktype",
@@ -21,11 +23,13 @@
 				"dbaeumer.vscode-eslint",
 				"ms-dotnettools.csharp",
 				"k--kato.docomment"
-		],
-		"forwardPorts": [
-				5000,
-				5001
-		],
-		"postCreateCommand": "/bin/bash /conf/setup.sh",
-		"name": "SimpleTest"
+			]
+		}
+	},
+	"forwardPorts": [
+		5000,
+		5001
+	],
+	"postCreateCommand": "/bin/bash /conf/setup.sh",
+	"name": "SimpleTest"
 }
