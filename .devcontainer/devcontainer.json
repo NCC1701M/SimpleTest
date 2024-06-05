@@ -11,7 +11,6 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-azuretools.vscode-docker",
 				"eamodio.gitlens",
 				"quicktype.quicktype",
 				"mtxr.sqltools",
@@ -21,15 +20,42 @@
 				"mtxr.sqltools-driver-mssql",
 				"hookyqr.beautify",
 				"dbaeumer.vscode-eslint",
+				"k--kato.docomment",
 				"ms-dotnettools.csharp",
-				"k--kato.docomment"
-			]
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.vscode-dotnet-runtime"
+			],
+			"settings": {
+				"sqltools.connections": [
+					{
+						"mssqlOptions": {
+							"appName": "SQLTools",
+							"useUTC": true,
+							"encrypt": true
+						},
+						"previewLimit": 50,
+						"server": "localhost",
+						"port": 1433,
+						"driver": "MSSQL",
+						"name": "local",
+						"database": "master",
+						"username": "sa",
+						"password": "APr3ttyStr0ngP@ssword"
+					}
+				],
+				"dotnet.defaultSolution": "SimpleTest.sln"
+			}
 		}
 	},
 	"forwardPorts": [
-		5000,
-		5001
+		1433
 	],
-	"postCreateCommand": "/bin/bash /conf/setup.sh",
+	"portsAttributes": {
+		"1433": {
+			"label": "Database",
+			"onAutoForward": "silent"
+		}
+	},
+	"postCreateCommand": "/bin/bash /workspaces/SimpleTest/.devcontainer/custom-scripts/setup.sh",
 	"name": "SimpleTest"
 }

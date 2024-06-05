@@ -5,15 +5,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        USER_ID: 1000
-        USER_GID: 1000
     volumes:
-    - /var/run/docker.sock:/var/run/docker-host.sock
     - ..:/workspaces:cached
-    # - shareddata:/tmp/host
-    network_mode: host
+    network_mode: service:db
     command: sleep infinity
-# volumes:
-#   shareddata:
-#     external: true
+  db:
+    container_name: SimpleTestDB
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: Y
+      COLLATION: Latin1_General_CI_AS
+      SA_PASSWORD: APr3ttyStr0ngP@ssword

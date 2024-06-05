@@ -1,55 +1,51 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Builder;
+using SimpleTest.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace SimpleTest;
-/// <summary>
-/// Contains the main method of this application.
-/// </summary>
-public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Entities")));
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
 {
-	/// <summary>
-	/// The main method of the application.
-	/// </summary>
-	/// <param name="args">The command line arguments.</param>
-	public static void Main(string[] args)
-	{
-		BuildWebHost(args).Run();
-	}
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-	/// <summary>
-	/// Builds the web host of the application.
-	/// </summary>
-	/// <param name="args">The arguments for building the web host.</param>
-	/// <returns></returns>
-	public static WebApplication BuildWebHost(string[] args) =>
-		CreateWebApplication(args)
-			.Build<Startup>();
+app.UseHttpsRedirection();
 
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
 
-	// Located in an external library
-	private static WebApplicationBuilder CreateWebApplication(string[] args)
-	{
-		var result = WebApplication.CreateBuilder();
+app.MapGet("/weatherforecast", () =>
+{
+    var forecast =  Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+})
+.WithName("GetWeatherForecast")
+.WithOpenApi();
 
-		result.WebHost
-				.UseKestrel(options => options.AddServerHeader = false)
-				.UseIISIntegration()
-				.UseDefaultServiceProvider((cbo, options) => options.ValidateScopes = cbo.HostingEnvironment.IsDevelopment())
-				// .UseWebRoot("wwwroot") // Does not work with or without explicit setting of Web Root.
-				.UseContentRoot(Directory.GetCurrentDirectory());
+var db = app.Services.CreateScope().ServiceProvider.GetService<DataContext>();
+db?.Database.Migrate();
 
-		result.Configuration
-				.AddCommandLine(args)
-				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("serversettings.json", true)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{result.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true)
-				.AddEnvironmentVariables();
+app.Run();
 
-		return result;
-	}
+record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }

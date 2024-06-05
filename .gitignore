@@ -13,6 +13,7 @@
 /**/bazel-out
 /**/Database
 /**/.angular
+/**/Migrations
 
 
 # dependencies

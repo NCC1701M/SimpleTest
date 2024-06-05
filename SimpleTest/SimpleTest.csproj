@@ -1,39 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-		<AssemblyName>SimpleTest</AssemblyName>
-		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-		<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<IsPackable>false</IsPackable>
-		<SpaRoot>../SimpleTest.Client/</SpaRoot>
-		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules/**</DefaultItemExcludes>
-
-		<BuildServerSideRenderer>false</BuildServerSideRenderer>
-		<RootNamespace>SimpleTest</RootNamespace>
-
-		<DebugType Condition=" '$(Configuration)' == 'Release' ">None</DebugType>
-		<UserSecretsId>e0f9a8c7-3d61-4540-8978-3f7e03dd71e9</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot/" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.*" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<!-- Don't publish the SPA source files, but do show them in the project files list -->
-		<Content Remove="$(SpaRoot)**" />
-		<None Remove="$(SpaRoot)**" />
-		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules/**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="*" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.*" />
-		<PackageReference Include="Microsoft.Identity.Web" Version="1.*" />
-		<PackageReference Include="Microsoft.Identity.Web.UI" Version="1.*" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="*" />
-	</ItemGroup>
 </Project>

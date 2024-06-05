@@ -12,6 +12,38 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "Add migration",
+			"command": "dotnet",
+			"type": "shell",
+			"args": [
+				"ef",
+				"migrations",
+				"add",
+				"${input:migrationName}",
+				"--startup-project",
+				"${workspaceFolder}/SimpleTest/SimpleTest.csproj",
+				"--project",
+				"${workspaceFolder}/SimpleTest/SimpleTest.csproj",
+				"--context",
+				"DataContext"
+			],
+			"problemMatcher": [],
+			"linux": {
+				"options": {
+					"env": {
+						"PATH": "${env:PATH}:/root/.dotnet/tools"
+					}
+				}
+			}
+		}
+	],
+	"inputs": [
+		{
+			"id": "migrationName",
+			"type": "promptString",
+			"description": "Enter the name of the migration"
 		}
 	]
 }
